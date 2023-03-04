@@ -1,6 +1,7 @@
 import openai
 import datetime
 import sys
+import json
 
 def init_openai():
     if len(sys.argv) < 2:
@@ -23,6 +24,8 @@ def chat(text):
 
 def chat_with_gpt():
     print("Chat with GPT")
+    with open("log.json", "r") as f:
+        messages = json.load(f)
     print("\n".join((str(i) for i in messages)))
     # Chat with GPT
     while True:
@@ -39,8 +42,10 @@ def chat_with_gpt():
         result = response.choices[0]['message']
         print(f"[{d}] {result['role']}: {result['content']}")    
         messages.append(result)
+        with open("log.json", "w") as f:
+            json.dump(messages, f)
         with open("log.txt", "a") as f:
-            f.write(f"[{d}] User: {user_input}\n\n[{d}] GPT: {result}\n\n----------------------\n\n")
+            f.write(f"[{d}] User: {user_input}\n[{d}] {result['role']}: {result['content']}\n----------------------\n\n")
 
 if __name__ == "__main__":
     init_openai()
