@@ -23,9 +23,13 @@ def chat(text):
 
 
 def chat_with_gpt():
+    global messages
     print("Chat with GPT")
-    with open("log.json", "r") as f:
-        messages = json.load(f)
+    try:
+        with open("log.json", "r") as f:
+            messages = json.load(f)
+    except:
+        pass
     print("\n".join((str(i) for i in messages)))
     # Chat with GPT
     while True:
